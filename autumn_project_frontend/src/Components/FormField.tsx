@@ -11,7 +11,7 @@ interface FormFieldProps {
 
 const FormField: React.FC<FormFieldProps> = ({ label, type, placeholder, value, onChange, isTextArea = false }) => {
   return (
-    <div className="mb-4">
+    <div className="mb-2 mt-2">
       <label className="block text-gray-700 text-sm font-bold mb-2">{label}</label>
       {isTextArea ? (
         <textarea

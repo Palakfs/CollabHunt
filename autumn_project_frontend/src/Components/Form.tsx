@@ -86,7 +86,7 @@ const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }) => {
     <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md max-w-2xl w-full">
       {fields.map((field, index) => (
         <div key={index}>
-          {field.label === 'Category' || field.label === 'Visible To' ? (
+          {field.label === 'Category' || field.label === 'Visible To' || field.label === 'Your Commitment Level'? (
             <>
               <label className="block text-gray-700 font-bold mb-2">{field.label}</label>
               <select
@@ -108,7 +108,7 @@ const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }) => {
                     <button
                       type="button"
                       onClick={() => handleRemoveOption(option)}
-                      className="text-red-500 font-bold"
+                      className="text-red-500 font-bold "
                     >
                       &#x2716;
                     </button>
@@ -127,7 +127,7 @@ const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }) => {
                 isTextArea={field.isTextArea}
               />
               {errors[field.label] && (
-                <p className="text-red-500 text-sm mt-1">{errors[field.label]}</p>
+                <p className="text-red-500 text-sm mb-1">{errors[field.label]}</p>
               )}
             </>
           )}
