@@ -4,11 +4,12 @@ import './App.css';
 import LoginPage from './Pages/Login';
 import AddEventForm from './Pages/Add_an_event'; 
 import CreateTeamForm from './Pages/Create_Team';
+import CreateGroupForm from './Pages/Create_Group';
 
 function App() {
   return (
     <div>
-    <CreateTeamForm />
+    <CreateGroupForm />
   </div>
   );
 }

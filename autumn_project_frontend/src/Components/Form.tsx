@@ -86,7 +86,7 @@ const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }) => {
     <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md max-w-2xl w-full">
       {fields.map((field, index) => (
         <div key={index}>
-          {field.label === 'Category' || field.label === 'Visible To' || field.label === 'Your Commitment Level'? (
+          {field.label === 'Category' || field.label === 'Visible To' || field.label === 'Your Commitment Level' || field.label === 'Add Group Members' ? (
             <>
               <label className="block text-gray-700 font-bold mb-2">{field.label}</label>
               <select
