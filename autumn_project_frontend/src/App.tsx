@@ -1,17 +1,21 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import LoginPage from './Pages/Login';
 import AddEventForm from './Pages/Add_an_event'; 
 import CreateTeamForm from './Pages/Create_Team';
 import CreateGroupForm from './Pages/Create_Group';
+import PersonProfileCard from './Components/Person_Profile_Card';
+
+export {}; 
 
 function App() {
-  return (
-    <div>
-    <CreateGroupForm />
+
+
+return (
+  <div>
+  
   </div>
-  );
+);
 }
 
 export default App;
