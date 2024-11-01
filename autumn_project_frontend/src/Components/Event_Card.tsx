@@ -10,7 +10,7 @@ interface EventCardProps {
 
 const EventCard: React.FC<EventCardProps> = ({ eventName, eventAdmin, eventDescription, eventDeadline, linkForMoreDetails }) => {
   return (
-    <div className="bg-gray-100 rounded-lg shadow-md mb-4 p-4 m-2 w-1/2">
+    <div className="bg-gray-100 rounded-lg shadow-md mb-4 p-4 m-2 w-9/10">
       <div className="flex justify-between items-start">
         <div className="flex flex-col m-1">
           <h2 className="text-lg font-semibold mb-1">{eventName}</h2>
