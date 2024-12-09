@@ -17,21 +17,35 @@ import SkillFormCard from './Components/Skill_Form_Component';
 import ExperienceFormCard from './Components/Experience_Form_Component';
 import ProjectFormCard from './Components/Project_Form_Card';
 import EditProfileTemplatePage from './Components/Edit_Profile_Component';
+import SignupPage from './Pages/Signup';
+import ReactDOM from 'react-dom/client';
+import {BrowserRouter ,Route, Routes} from 'react-router-dom'
+import { channeliRoute } from './route';
 
 export {}; 
 
+
 function App() {
-  const sampleProfileData = {
-    avatarUrl: 'https://example.com/avatar.jpg',
-    name: 'John Doe',
-    profile_description: 'A brief description about John.',
-  };
-  
+
   return (
-    <div className="App">
-    <EditProfileTemplatePage profileData={sampleProfileData} />
-  </div>
-  );
+    <>
+     <BrowserRouter>
+      <Routes>
+      <Route path='/signup' element={<SignupPage/>}> </Route>
+      <Route path='/login' element={<LoginPage />}></Route>
+      <Route path='/oauth' element={channeliRoute}></Route>
+      </Routes>
+     </BrowserRouter> 
+    </>
+  )
 }
+  
+  
+ // return (
+   // <div className="App">
+     //<SignupPage/> 
+  //</div>
+  //)
+//}
 
 export default App;

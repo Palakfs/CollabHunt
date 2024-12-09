@@ -61,13 +61,13 @@ class Project(models.Model):
 
 class Profile(models.Model):
     username = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
-    email = models.EmailField()
-    full_name = models.CharField(max_length=255)
-    contact_number = models.PositiveSmallIntegerField()
-    branch_id = models.ForeignKey(Branch, on_delete=models.CASCADE)
-    year = models.PositiveSmallIntegerField()
-    skill_id = models.ManyToManyField(Skill)
-    experience = models.CharField(max_length=255)
+    email = models.EmailField(null=True,blank=True)
+    full_name = models.CharField(max_length=255,null=True,blank=True)
+    contact_number = models.PositiveSmallIntegerField(null=True,blank=True)
+    branch_id = models.ForeignKey(Branch, on_delete=models.CASCADE,null=True,blank=True)
+    year = models.PositiveSmallIntegerField(null=True,blank=True)
+    skill_id = models.ManyToManyField(Skill,blank=True)
+    experience = models.CharField(max_length=255,null=True,blank=True)
 
     def __str__(self):
         return self.full_name

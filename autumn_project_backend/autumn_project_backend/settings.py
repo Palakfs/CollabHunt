@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'oauth2_provider',
+    'corsheaders', 
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'autumn_project_backend.urls'
@@ -146,3 +149,6 @@ OAUTH_CLIENT_ID = '46Umz5dol98I2fPZHQFYpgKBDHU3lKjEYfJuOjjG'
 OAUTH_CLIENT_SECRET = 'aRR5vICdcahHsqKlwFJzWqSH3LRtE5hAdvq3Er62SD9zt9u6HP1W6IuPvnAAjWCvgGjYqNfKeavy0ZHqTZDmzPQjUxPqvXpru3o9191OEKOnqfHwNa8ocDsTBT49T2Uh',
 OAUTH_REDIRECT_URI = 'http://127.0.0.1:8000/oauth/'
 OAUTH_SERVER_BASE_URL = 'https://channeli.in'
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000', 
+]

@@ -15,7 +15,7 @@ const ContactDetailsFormCard: React.FC = () => {
     <div className="p-4 border rounded-lg shadow-md w-6/10">
       <h2 className="text-left text-xl font-bold mb-4">Contact Details</h2>
       <div className="flex justify-between">
-        <div className="flex-1 mr-6 w-4/10">
+        <div className="flex-1 mr-16 w-4/10">
           <FormField
             label="Mobile Number"
             type="text"
@@ -27,7 +27,7 @@ const ContactDetailsFormCard: React.FC = () => {
             <span className="text-red-500 text-sm">Please enter a valid mobile number.</span>
           )}
         </div>
-        <div className="flex-1 ml-2 w-4/10 mr-4">
+        <div className="flex-1 ml-2 w-4/10 mr-14">
           <FormField
             label="Mail Id"
             type="email"
