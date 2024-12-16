@@ -8,7 +8,8 @@ from django.contrib.auth import authenticate
 from api.models import CustomUser 
 from api.models import Profile
 from rest_framework import status
-
+from rest_framework_simplejwt.tokens import RefreshToken
+from api.serializers.custom_token_serializer import CustomTokenObtainPairSerializer
 
 class UserRegistrationView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
@@ -24,6 +25,16 @@ class UserRegistrationView(generics.CreateAPIView):
 
         return Response(user_serializer.data, status=status.HTTP_201_CREATED)
     
+
+class CustomRefreshToken(RefreshToken):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    
+    def add_custom_claims(self, user):
+        self.payload['user_enrol'] = user.user_enrol
+        return self
+
+    
 class ObtainAuthToken(APIView):
     permission_classes = [AllowAny]
 
@@ -31,11 +42,27 @@ class ObtainAuthToken(APIView):
         user_enrol = request.data.get('user_enrol')
         password = request.data.get('password')
 
-    
         user = authenticate(request, user_enrol=user_enrol, password=password)
         
+        refresh = CustomRefreshToken.for_user(user)
+        refresh.add_custom_claims(user)  
+
         if user is not None:
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({'token': token.key})
-        return Response({'error': 'Invalid Credentials'}, status=400)
+            refresh = RefreshToken.for_user(user)
+       
+            access_token = refresh.access_token
+            access_token['user_enrol'] = user.user_enrol
+            
+
+
+            return Response(
+                {
+                    "refresh": str(refresh),
+                    "access": str(refresh.access_token),
+                }
+            )
+        print("Authentication failed") 
+        return Response({"error": "Invalid Credentials"}, status=401)
+    
+
     

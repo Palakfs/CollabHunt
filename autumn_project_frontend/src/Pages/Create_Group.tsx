@@ -1,5 +1,10 @@
 import React from 'react';
 import FormComponent from '../Components/Form'; 
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../Redux/store';
+import { createEvent }  from '../features/thunks/eventThunk';
+import { fetchCategories } from '../features/thunks/categoryThunk';
+import { fetchGroups } from '../features/thunks/groupThunk';
 
 const CreateGroupForm = () => {
     const fields = [

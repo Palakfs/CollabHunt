@@ -12,25 +12,25 @@ interface FormComponentProps {
   onSubmit: (data: { [key: string]: any }) => void;
 }
 
-const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }) => {
+export const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }) => {
   const [formData, setFormData] = useState<{ [key: string]: any }>({});
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string[] }>({});
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.])([\/\w .-]*)*\/?$/;
 
+  
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     label: string
   ) => {
     const value = event.target.value;
 
-    
     setFormData({
       ...formData,
       [label]: value,
     });
 
-  
+    
     if (errors[label]) {
       setErrors((prevErrors) => {
         const updatedErrors = { ...prevErrors };
@@ -40,31 +40,62 @@ const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }) => {
     }
   };
 
-  const handleAddOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  
+  const handleAddOption = (event: React.ChangeEvent<HTMLSelectElement>, label: string) => {
     const option = event.target.value;
-    if (option && !selectedOptions.includes(option)) {
-      setSelectedOptions([...selectedOptions, option]);
+
+   
+    setFormData({
+      ...formData,
+      [label]: option,
+    });
+
+    
+    if (option && (!selectedOptions[label] || !selectedOptions[label].includes(option))) {
+      setSelectedOptions({
+        ...selectedOptions,
+        [label]: [...(selectedOptions[label] || []), option],
+      });
+    }
+
+    
+    if (errors[label]) {
+      setErrors((prevErrors) => {
+        const updatedErrors = { ...prevErrors };
+        delete updatedErrors[label];
+        return updatedErrors;
+      });
     }
   };
 
-  const handleRemoveOption = (option: string) => {
-    setSelectedOptions(selectedOptions.filter((item) => item !== option));
+ 
+  const handleRemoveOption = (label: string, option: string) => {
+    setFormData({
+      ...formData,
+      [label]: option, 
+    });
+
+    setSelectedOptions({
+      ...selectedOptions,
+      [label]: selectedOptions[label].filter((item) => item !== option),
+    });
   };
 
+  
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const newErrors: { [key: string]: string } = {};
 
-   
+    
     fields.forEach((field) => {
       const value = formData[field.label];
 
-      
-      if (field.label !== 'Link For More Details' && !value) {
+     
+      if ((field.label !== 'Link For More Details' && field.label !== 'Visible To') && !value) {
         newErrors[field.label] = `${field.label} is required.`;
       }
 
-    
+     
       if (field.label === 'Link For More Details') {
         if (value && !urlRegex.test(value)) {
           newErrors[field.label] = 'Please enter a valid URL.';
@@ -74,7 +105,7 @@ const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }) => {
 
     setErrors(newErrors);
 
-    
+   
     if (Object.keys(newErrors).length === 0) {
       onSubmit({ ...formData, selectedOptions });
     } else {
@@ -86,15 +117,17 @@ const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }) => {
     <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md max-w-2xl w-full">
       {fields.map((field, index) => (
         <div key={index}>
-          {field.label === 'Category' || field.label === 'Visible To' || field.label === 'Your Commitment Level' || field.label === 'Add Group Members' ? (
+          {field.type === 'select' ? (
             <>
               <label className="block text-gray-700 font-bold mb-2">{field.label}</label>
               <select
-                onChange={handleAddOption}
+                onChange={(event) => handleAddOption(event, field.label)}
+                value={formData[field.label] || ""}
                 className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                defaultValue=""
               >
-                <option value="" disabled>Select options</option>
+                <option value="" disabled>
+                  Select options
+                </option>
                 {field.options?.map((option) => (
                   <option key={option} value={option}>
                     {option}
@@ -102,13 +135,16 @@ const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }) => {
                 ))}
               </select>
               <div className="mt-2">
-                {selectedOptions.map((option) => (
-                  <div key={option} className="flex items-center justify-between p-2 bg-gray-200 rounded mt-1">
+                {selectedOptions[field.label]?.map((option) => (
+                  <div
+                    key={option}
+                    className="flex items-center justify-between p-2 bg-gray-200 rounded mt-1"
+                  >
                     <span>{option}</span>
                     <button
                       type="button"
-                      onClick={() => handleRemoveOption(option)}
-                      className="text-red-500 font-bold "
+                      onClick={() => handleRemoveOption(field.label, option)}
+                      className="text-red-500 font-bold"
                     >
                       &#x2716;
                     </button>

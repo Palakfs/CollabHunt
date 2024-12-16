@@ -33,7 +33,9 @@ function App() {
       <Routes>
       <Route path='/signup' element={<SignupPage/>}> </Route>
       <Route path='/login' element={<LoginPage />}></Route>
-      <Route path='/oauth' element={channeliRoute}></Route>
+      <Route path='/create_event' element={<AddEventForm/>}></Route>
+      <Route path='/events' element={<EventTemplatePage/>}></Route>
+      <Route path='/edit_profile' element ={<EditProfileTemplatePage/>}></Route>
       </Routes>
      </BrowserRouter> 
     </>

@@ -4,12 +4,21 @@ from api.serializers.group_serializer import GroupSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from api.permissions.group_permissions import IsGroupAdmin
+from rest_framework.views import APIView
+
+class GroupListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        groups = Group.objects.all()
+        serializer = GroupSerializer(groups, many=True)
+        return Response(serializer.data)
 
 
 class GroupListCreateView(generics.ListCreateAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_classes = permissions.IsAuthenticated
+    permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(group_admin=self.request.user)

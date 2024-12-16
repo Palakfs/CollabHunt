@@ -1,46 +1,88 @@
 import React, { useState } from 'react';
+import { jwtDecode } from 'jwt-decode'; 
+import axiosInstance from '../utils/axiosInstance';
 import FormField from './FormField';
 
-const ContactDetailsFormCard: React.FC = () => {
-  const [mobileNumber, setMobileNumber] = useState('');
-  const [emailId, setEmailId] = useState('');
+interface JwtPayload {
+  user_id: string;
+}
 
-  const mobileRegex = /^[0-9]{10}$/; 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+interface ProfileData {
+  contact_number: number | null;
+  email: string | null;
+}
 
-  const isMobileValid = mobileRegex.test(mobileNumber);
-  const isEmailValid = emailRegex.test(emailId);
+interface ContactDetailsFormCardProps {
+  profile: ProfileData; 
+  onProfileUpdate: () => void; 
+}
+
+const ContactDetailsFormCard: React.FC<ContactDetailsFormCardProps> = ({ profile, onProfileUpdate }) => {
+  const [contactNumber, setContactNumber] = useState<string>(profile.contact_number?.toString() || ''); 
+  const [email, setEmail] = useState(profile.email || '');
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const token = localStorage.getItem('access_token'); 
+      let userId: string | null = null;
+
+      if (token) {
+        const decodedToken = jwtDecode<JwtPayload>(token);
+        userId = decodedToken.user_id;
+      } else {
+        throw new Error('User not authenticated. Access token missing.');
+      }
+
+      if (userId) {
+        
+        const contactNumberToSend = contactNumber ? parseInt(contactNumber) : null; 
+
+        await axiosInstance.patch(`/get_user_profile/${userId}/`, {
+          "contact_number": contactNumberToSend,
+          "email": email,
+        });
+        setError(null); 
+        onProfileUpdate(); 
+      }
+    } catch (err) {
+      console.error('Failed to update profile:', err);
+      setError('Failed to update contact details.');
+    } finally {
+      setLoading(false); 
+    }
+  };
 
   return (
-    <div className="p-4 border rounded-lg shadow-md w-6/10">
+    <form onSubmit={handleSubmit} className="p-4 border rounded-lg shadow-md">
       <h2 className="text-left text-xl font-bold mb-4">Contact Details</h2>
-      <div className="flex justify-between">
-        <div className="flex-1 mr-16 w-4/10">
-          <FormField
-            label="Mobile Number"
-            type="text"
-            placeholder="Enter your mobile number"
-            value={mobileNumber}
-            onChange={(e) => setMobileNumber(e.target.value)}
-          />
-          {!isMobileValid && mobileNumber && (
-            <span className="text-red-500 text-sm">Please enter a valid mobile number.</span>
-          )}
-        </div>
-        <div className="flex-1 ml-2 w-4/10 mr-14">
-          <FormField
-            label="Mail Id"
-            type="email"
-            placeholder="Enter your mail id"
-            value={emailId}
-            onChange={(e) => setEmailId(e.target.value)}
-          />
-          {!isEmailValid && emailId && (
-            <span className="text-red-500 text-sm">Please enter a valid email address.</span>
-          )}
-        </div>
-      </div>
-    </div>
+      <FormField
+        label="Contact Number"
+        type="text"
+        placeholder="Enter your contact number"
+        value={contactNumber}
+        onChange={(e) => setContactNumber(e.target.value)}
+      />
+      <FormField
+        label="Email"
+        type="email"
+        placeholder="Enter your email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      {error && <p className="text-red-500">{error}</p>}
+      <button 
+        type="submit" 
+        className="bg-blue-500 text-white py-2 px-4 rounded-md mt-4" 
+        disabled={loading}
+      >
+        {loading ? 'Saving...' : 'Save Changes'}
+      </button>
+    </form>
   );
 };
 

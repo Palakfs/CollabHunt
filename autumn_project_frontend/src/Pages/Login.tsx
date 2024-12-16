@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from '../Redux/store';
 import { userLogin } from "../features/thunks/userAuth";
 
+
 const LoginPage = () => {
   const [userEnrol, setUserEnrol] = useState<string>(""); 
   const [password, setPassword] = useState("");
@@ -20,7 +21,7 @@ const LoginPage = () => {
       .unwrap()
       .then(() => {
         console.log("Login successful!");
-        navigate("/dashboard"); 
+        navigate("/events"); 
       })
       .catch((err) => {
         console.error("Login failed:", err);

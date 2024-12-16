@@ -6,13 +6,16 @@ from rest_framework import status
 from api.permissions.project_permissions import IsProjectOwner
 
 class ProjectListCreateView(generics.ListCreateAPIView):
- 
-    queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        
+        return Project.objects.filter(profile=self.request.user.profile)
 
     def perform_create(self, serializer):
        
-        serializer.save(owner=self.request.user)
+        serializer.save(profile=self.request.user.profile)
 
 class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
    
@@ -30,7 +33,7 @@ class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
         
         instance = self.get_object()
 
-        if instance.owner != request.user:
+        if instance.profile != request.user.profile:
             return Response({'detail': 'No Permission Access'}, status=status.HTTP_403_FORBIDDEN)
 
         serializer = self.get_serializer(instance, data=request.data, partial=True)
@@ -42,7 +45,7 @@ class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
       
         instance = self.get_object()
 
-        if instance.owner != request.user:
+        if instance.profile != request.user.profile:
             return Response({'detail': 'No Permission Access'}, status=status.HTTP_403_FORBIDDEN)
 
         self.perform_destroy(instance)

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -136,11 +137,17 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
 AUTH_USER_MODEL = 'api.CustomUser'
@@ -149,6 +156,4 @@ OAUTH_CLIENT_ID = '46Umz5dol98I2fPZHQFYpgKBDHU3lKjEYfJuOjjG'
 OAUTH_CLIENT_SECRET = 'aRR5vICdcahHsqKlwFJzWqSH3LRtE5hAdvq3Er62SD9zt9u6HP1W6IuPvnAAjWCvgGjYqNfKeavy0ZHqTZDmzPQjUxPqvXpru3o9191OEKOnqfHwNa8ocDsTBT49T2Uh',
 OAUTH_REDIRECT_URI = 'http://127.0.0.1:8000/oauth/'
 OAUTH_SERVER_BASE_URL = 'https://channeli.in'
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000', 
-]
+CORS_ALLOW_ALL_ORIGINS = True 

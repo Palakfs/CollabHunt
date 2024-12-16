@@ -1,24 +1,27 @@
 from rest_framework import generics, permissions
-from api.models import Skill
-from api.serializers.skill_serializer import SkillSerializer
+from api.models import Experience
+from api.serializers.experience_serializer import ExperienceSerializer
 from rest_framework.response import Response
 from rest_framework import status
-from api.permissions.skill_permissions import IsSkillOwner
+from api.permissions.experience_permissions import IsExperienceOwner
 
-class SkillListCreateView(generics.ListCreateAPIView):
- 
-    queryset = Skill.objects.all()
-    serializer_class = SkillSerializer
+class ExperienceListCreateView(generics.ListCreateAPIView):
+    serializer_class = ExperienceSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        
+        return Experience.objects.filter(profile=self.request.user.profile)
 
     def perform_create(self, serializer):
        
-        serializer.save(owner=self.request.user)
+        serializer.save(profile=self.request.user.profile)
 
-class SkillDetailView(generics.RetrieveUpdateDestroyAPIView):
+class ExperienceDetailView(generics.RetrieveUpdateDestroyAPIView):
    
-    queryset = Skill.objects.all()
-    serializer_class = SkillSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsSkillOwner]
+    queryset = Experience.objects.all()
+    serializer_class = ExperienceSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsExperienceOwner]
 
     def retrieve(self, request, *args, **kwargs):
       
@@ -30,7 +33,7 @@ class SkillDetailView(generics.RetrieveUpdateDestroyAPIView):
         
         instance = self.get_object()
 
-        if instance.owner != request.user:
+        if instance.profile != request.user.profile:
             return Response({'detail': 'No Permission Access'}, status=status.HTTP_403_FORBIDDEN)
 
         serializer = self.get_serializer(instance, data=request.data, partial=True)
@@ -42,7 +45,7 @@ class SkillDetailView(generics.RetrieveUpdateDestroyAPIView):
       
         instance = self.get_object()
 
-        if instance.owner != request.user:
+        if instance.profile != request.user.profile:
             return Response({'detail': 'No Permission Access'}, status=status.HTTP_403_FORBIDDEN)
 
         self.perform_destroy(instance)

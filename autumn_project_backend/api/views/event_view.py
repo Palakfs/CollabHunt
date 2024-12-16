@@ -2,13 +2,24 @@ from rest_framework import generics, permissions
 from api.models import Event
 from api.serializers.event_serializer import EventSerializer
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status                                                  
 from api.permissions.event_permissions import IsEventAdmin
+from rest_framework.views import APIView
+
+
+class EventListView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        events = Event.objects.all()
+        serializer = EventSerializer(events, many=True)
+        return Response(serializer.data)
+
 
 class EventListCreateView(generics.ListCreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    permission_classes = permissions.IsAuthenticated
+    permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(event_admin=self.request.user)

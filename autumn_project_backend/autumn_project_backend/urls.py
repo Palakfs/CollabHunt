@@ -18,7 +18,13 @@ from django.contrib import admin
 from django.urls import path , include
 from api.views.token_view import UserRegistrationView, ObtainAuthToken
 from api.views import oauth_view , profile_view , token_view
-
+from api.views.event_view import EventListCreateView , EventListView
+from api.views.group_view import GroupListView , GroupListCreateView
+from api.views.category_view import CategoryListView
+from api.views.get_user_enrol_view import GetUserEnrol
+from api.views.profile_view import ProfileDetailView
+from api.views.project_view import ProjectListCreateView , ProjectDetailView
+from api.views.experienceView import ExperienceDetailView , ExperienceListCreateView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('signup/', UserRegistrationView.as_view(), name='user-signup'),
@@ -29,7 +35,19 @@ urlpatterns = [
     path('logout/', oauth_view.logout_view, name='logout'),
     path('error_page/', oauth_view.error_page, name='error_page'),
     path('start_oauth/', oauth_view.start_oauth, name='start_oauth'),
+    path('create_event/', EventListCreateView.as_view() , name='create_event'),
+    path('groups/',GroupListView.as_view(),name='groups'),
+    path('categories/',CategoryListView.as_view(),name='categories'),
+    path('create_group/',GroupListCreateView.as_view(),name='create_group'),
+    path('events/',EventListView.as_view(),name='events'),
+    path('get_user_enrol/<int:user_id>/', GetUserEnrol.as_view(), name='get_user_enrol'),
+    path('get_user_profile/<int:username>/', ProfileDetailView.as_view(), name='get_user_profile'),
+    path('projects/',ProjectListCreateView.as_view(),name='projects'),
+    path('projects/<int:pk>/',ProjectDetailView.as_view(),name='get_project'),
+    path('experiences/',ExperienceListCreateView.as_view(),name='experiences'),
+    path('experiences/<int:pk>/',ExperienceDetailView.as_view(),name='get_experience'),
     
+
 ]
 
 
