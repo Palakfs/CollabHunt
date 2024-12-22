@@ -36,6 +36,10 @@ function App() {
       <Route path='/create_event' element={<AddEventForm/>}></Route>
       <Route path='/events' element={<EventTemplatePage/>}></Route>
       <Route path='/edit_profile' element ={<EditProfileTemplatePage/>}></Route>
+      <Route path='/create_group' element = {<CreateGroupForm/>}></Route>
+      <Route path='/groups' element = {<GroupTemplatePage/>}></Route>
+      <Route path='/teams' element = {<TeamTemplatePage/>}></Route>
+      <Route path='/create_team' element = {<CreateTeamForm/>}></Route>
       </Routes>
      </BrowserRouter> 
     </>

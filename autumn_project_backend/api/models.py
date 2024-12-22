@@ -75,7 +75,7 @@ class Group(models.Model):
     group_name = models.CharField(max_length=128)
     group_description = models.TextField(null=True)
     group_admin = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='admin_groups')
-    member_id = models.ManyToManyField(CustomUser, related_name='member_groups') 
+    member_id = models.ManyToManyField(Profile, related_name='member_groups') 
 
 class Category(models.Model):
     category = models.AutoField(primary_key=True)
@@ -93,28 +93,23 @@ class Event(models.Model):
 
 class Commitment_Role(models.Model):
     commitment_role = models.AutoField(primary_key=True, default=1)
-    role_name = models.CharField(max_length=128)
-
-class Person_Event_Expertise(models.Model):
-    expertise = models.AutoField(primary_key=True)
-    event_id = models.ForeignKey(Event, on_delete=models.CASCADE)
-    person_username = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    commitment_role_id = models.ForeignKey(Commitment_Role, on_delete=models.CASCADE)
-    event_expertise = models.TextField()
+    role_name = models.CharField()
 
 class Team(models.Model):
     team = models.AutoField(primary_key=True)
-    event_id = models.ForeignKey(Event, on_delete=models.CASCADE)
+    event_id = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_teams')
     team_admin_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='admin_teams')
     team_member_id = models.ManyToManyField(CustomUser, related_name='member_teams')
-    team_theme_goals = models.TextField()
-    expectations = models.TextField()
+    team_name = models.TextField()
+    team_description = models.TextField(null=True)
+    expectations = models.TextField(null=True)
     max_members = models.PositiveSmallIntegerField()
-    admin_expertise_id = models.ForeignKey(Person_Event_Expertise, on_delete=models.CASCADE)
+    admin_expertise = models.TextField(null=True)
+    commitment_role_id = models.ForeignKey(Commitment_Role, on_delete=models.CASCADE,related_name='role_teams')
 
 class Joining_Request(models.Model):
     request = models.AutoField(primary_key=True)
     team_id = models.ForeignKey(Team, on_delete=models.CASCADE)
-    person_expertise_id = models.ForeignKey(Person_Event_Expertise, on_delete=models.CASCADE)
+    person_expertise = models.TextField(null=True)
     is_accepted = models.BooleanField()
     

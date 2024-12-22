@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from api.models import Group
+from api.models import Group , Profile
 
 class GroupSerializer(serializers.ModelSerializer):
+    member_id = serializers.PrimaryKeyRelatedField(queryset=Profile.objects.all(), many=True)
     class Meta:
         model = Group
         fields = ['group', 'group_name', 'group_description', 'group_admin', 'member_id']

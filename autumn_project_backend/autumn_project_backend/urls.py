@@ -19,12 +19,15 @@ from django.urls import path , include
 from api.views.token_view import UserRegistrationView, ObtainAuthToken
 from api.views import oauth_view , profile_view , token_view
 from api.views.event_view import EventListCreateView , EventListView
-from api.views.group_view import GroupListView , GroupListCreateView
+from api.views.group_view import GroupListView , GroupListCreateView , GroupDetailView
 from api.views.category_view import CategoryListView
 from api.views.get_user_enrol_view import GetUserEnrol
-from api.views.profile_view import ProfileDetailView
-from api.views.project_view import ProjectListCreateView , ProjectDetailView
+from api.views.profile_view import ProfileDetailView , ProfileListView
+from api.views.project_view import ProjectListCreateView , ProjectDetailView 
 from api.views.experienceView import ExperienceDetailView , ExperienceListCreateView
+from api.views.commitment_role_view import CommitmentRoleListView
+from api.views.team_view import TeamListView , TeamListCreateView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('signup/', UserRegistrationView.as_view(), name='user-signup'),
@@ -46,7 +49,11 @@ urlpatterns = [
     path('projects/<int:pk>/',ProjectDetailView.as_view(),name='get_project'),
     path('experiences/',ExperienceListCreateView.as_view(),name='experiences'),
     path('experiences/<int:pk>/',ExperienceDetailView.as_view(),name='get_experience'),
-    
+    path('profiles/' , ProfileListView.as_view() , name = 'profiles'),
+    path('groups/<int:pk>/' , GroupDetailView.as_view(),name='get_group'),
+    path('commitment_roles/', CommitmentRoleListView.as_view(),name='commitment_roles'),
+    path('teams/<int:event_id>/',TeamListView.as_view(),name='teams'),
+    path('create_team/<int:event_id>/',TeamListCreateView.as_view(),name='create_team')
 
 ]
 

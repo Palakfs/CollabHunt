@@ -40,6 +40,18 @@ const EventTemplatePage: React.FC = () => {
     navigate("/edit_profile")
   };
 
+  const handleAddGroup = () => {
+    navigate("/create_group")
+  }
+
+  const handleGroup = () => {
+    navigate('/groups')
+  }
+
+  const handleTeam = () => {
+    navigate('/teams')
+  }
+
   const filteredEvents = events.filter((event) => {
     return selectedCategory?.id && event.event_category_id.includes(selectedCategory.id);
   });
@@ -61,8 +73,8 @@ const EventTemplatePage: React.FC = () => {
         />
         <div className="w-90">
           <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mb-2 mt-2" onClick={handleNavigateProfile}>Add Skills, Projects, and Experience</button>
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2">Your Teams</button>
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2">Your Groups</button>
+          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2" onClick={handleTeam}>Your Teams</button>
+          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2" onClick={handleGroup}>Your Groups</button>
         </div>
       </div>
 
@@ -83,6 +95,7 @@ const EventTemplatePage: React.FC = () => {
           {filteredEvents.map((event, index) => (
             <EventCard
               key={index}
+              event_id={event.event}
               eventName={event.event_title}
               eventAdmin={'Admin'}
               eventDescription={event.event_description}

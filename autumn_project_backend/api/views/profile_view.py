@@ -66,3 +66,9 @@ class ProfileDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def destroy(self, request, *args, **kwargs):
         return Response({'detail': 'Deletion not allowed.'}, status=status.HTTP_403_FORBIDDEN)
+
+
+class ProfileListView(generics.ListAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]

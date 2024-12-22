@@ -5,7 +5,7 @@ interface TeamCardProps {
   teamAdmin: string;
   teamProfileLink: string;
   teamDescription: string;
-  vacancy: string;
+  vacancy: number;
 }
 
 const TeamCard: React.FC<TeamCardProps> = ({ teamName, teamAdmin, teamDescription, vacancy, teamProfileLink }) => {

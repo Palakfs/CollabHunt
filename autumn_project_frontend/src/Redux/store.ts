@@ -5,6 +5,9 @@ import categoryReducer from '../features/slices/categorySlice'
 import groupReducer from '../features/slices/groupSlice'
 import projectsReducer from '../features/slices/projectsSlice'
 import experienceReducer from '../features/slices/experienceSlice'
+import profileReducer from '../features/slices/profileSlice'
+import commitmentRoleReducer from '../features/slices/commitmentRoleSlice'
+import teamReducer from '../features/slices/teamSlice'
 
 const store = configureStore({
   reducer: {
@@ -14,7 +17,9 @@ const store = configureStore({
     group : groupReducer,
     projects: projectsReducer,
     experiences : experienceReducer,
-    
+    profile : profileReducer,
+    commitment : commitmentRoleReducer,
+    team : teamReducer,
   },
 });
 

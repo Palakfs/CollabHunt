@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 interface EventCardProps {
+  event_id: number;
   eventName: string;
   eventAdmin: string;
   linkForMoreDetails: string;
@@ -8,9 +11,17 @@ interface EventCardProps {
   eventDeadline: string;
 }
 
-const EventCard: React.FC<EventCardProps> = ({ eventName, eventAdmin, eventDescription, eventDeadline, linkForMoreDetails }) => {
+const EventCard: React.FC<EventCardProps> = ({ eventName, eventAdmin, eventDescription, eventDeadline, linkForMoreDetails, event_id }) => {
+  const navigate = useNavigate();
+  
+  const handleCardClick = () => {
+    navigate("/teams", { state: { event_id , eventName } });
+  };
   return (
-    <div className="bg-gray-100 rounded-lg shadow-md mb-4 p-4 m-2 w-9/10">
+    
+    <div 
+    onClick={handleCardClick}
+    className="bg-gray-100 rounded-lg shadow-md mb-4 p-4 m-2 w-9/10">
       <div className="flex justify-between items-start">
         <div className="flex flex-col m-1">
           <h2 className="text-lg font-semibold mb-1">{eventName}</h2>
