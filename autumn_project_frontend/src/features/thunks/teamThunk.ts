@@ -10,6 +10,7 @@ export interface TeamData {
   max_members: number;
   admin_expertise: string;
   commitment_role_id: number;
+  team_admin_id:number;
 }
 
 
@@ -30,7 +31,7 @@ export const createTeam = createAsyncThunk<void, TeamData, { rejectValue: string
 
 
 export const fetchTeams = createAsyncThunk<any[], { event_id: number }, { rejectValue: string }>(
-  'team/fetchAll',
+  'team/fetch',
   async ({ event_id }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get(`/teams/${event_id}/`); 
@@ -42,3 +43,27 @@ export const fetchTeams = createAsyncThunk<any[], { event_id: number }, { reject
 );
 
 export {};
+
+export const getTeam = createAsyncThunk<any,{team_id:number},{rejectValue:string}>(
+  'team/get',
+  async ({ team_id }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get(`/team/${team_id}/`); 
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch teams');
+    }
+  }
+);
+
+export const fetchAllTeams = createAsyncThunk<any[], void, { rejectValue: string }>(
+  'team/fetchAll',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get(`/teams/`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch teams');
+    }
+  }
+);

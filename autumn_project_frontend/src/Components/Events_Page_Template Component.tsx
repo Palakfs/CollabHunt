@@ -52,6 +52,10 @@ const EventTemplatePage: React.FC = () => {
     navigate('/teams')
   }
 
+  const handleYourTeams = () =>{
+    navigate('/your_teams')
+  }
+
   const filteredEvents = events.filter((event) => {
     return selectedCategory?.id && event.event_category_id.includes(selectedCategory.id);
   });
@@ -73,7 +77,7 @@ const EventTemplatePage: React.FC = () => {
         />
         <div className="w-90">
           <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mb-2 mt-2" onClick={handleNavigateProfile}>Add Skills, Projects, and Experience</button>
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2" onClick={handleTeam}>Your Teams</button>
+          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2" onClick={handleYourTeams}>Your Teams</button>
           <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2" onClick={handleGroup}>Your Groups</button>
         </div>
       </div>

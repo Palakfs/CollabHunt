@@ -4,7 +4,7 @@ from api.models import Team
 class TeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = Team
-        fields = ['team','team_member_id', 'team_name','team_description', 'expectations', 'max_members', 'admin_expertise','commitment_role_id']
+        fields = ['team','team_member_id', 'team_name','team_description', 'expectations', 'max_members', 'admin_expertise','commitment_role_id','team_admin_id','event_id']
         read_only_fields = ['team_admin_id', 'event_id']
         extra_kwargs = {
             'team_member_id': {'required': False},  

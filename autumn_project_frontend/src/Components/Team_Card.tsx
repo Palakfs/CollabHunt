@@ -1,30 +1,39 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 interface TeamCardProps {
-  teamName: string;
-  teamAdmin: string;
-  teamProfileLink: string;
-  teamDescription: string;
-  vacancy: number;
+  team:number,
+  team_name: string;
+  team_admin_id: number;
+  team_description: string;
+  max_members: number;
+  expectations : string,
+  admin_expertise : string,
+  commitment_role_id : number
 }
 
-const TeamCard: React.FC<TeamCardProps> = ({ teamName, teamAdmin, teamDescription, vacancy, teamProfileLink }) => {
+const TeamCard: React.FC<TeamCardProps> = ({ team_name, team_admin_id, team_description,max_members,team, admin_expertise , expectations , commitment_role_id}) => {
+  const navigate = useNavigate();
+    
+    const handleCardClick = () => {
+      navigate("/team", { state: { team_id:team , team_name , team_description , max_members , team_admin_id , expectations , admin_expertise , commitment_role_id } });
+    };
   return (
-    <div className="bg-gray-100 rounded-lg shadow-md mb-4 p-4 m-2 w-3/4">
+    <div 
+    onClick={handleCardClick}
+    className="bg-gray-100 rounded-lg shadow-md mb-4 p-4 m-2 w-3/4">
       <div className="flex justify-between items-start">
         <div className="flex flex-col m-1">
-          <h2 className="text-lg font-semibold mb-1">{teamName}</h2>
-          <p className="text-sm text-gray-600">Created by {teamAdmin}</p>
+          <h2 className="text-lg font-semibold mb-1">{team_name}</h2>
+          {/*<p className="text-sm text-gray-600">Created by {team_admin_id}</p>*/}
         </div>
-        <div className="flex flex-col m-1 text-right">
-          <p className="text-sm text-gray-600 mb-1">Needs {vacancy} members more</p>
-          <a href={teamProfileLink} className="text-blue-500 hover:underline">
-            View Team Profile
-          </a>
-        </div>
+       {/*<div className="flex flex-col m-1 text-right">
+          <p className="text-sm text-gray-600 mb-1">Needs {max_members} members more</p>
+        </div>*/}
       </div>
       <div className="mt-3 text-gray-700">
-        {teamDescription}
+        {team_description}
       </div>
     </div>
   );

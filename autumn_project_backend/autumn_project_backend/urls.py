@@ -26,7 +26,7 @@ from api.views.profile_view import ProfileDetailView , ProfileListView
 from api.views.project_view import ProjectListCreateView , ProjectDetailView 
 from api.views.experienceView import ExperienceDetailView , ExperienceListCreateView
 from api.views.commitment_role_view import CommitmentRoleListView
-from api.views.team_view import TeamListView , TeamListCreateView
+from api.views.team_view import TeamListView , TeamListCreateView ,  TeamDetailView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -53,8 +53,10 @@ urlpatterns = [
     path('groups/<int:pk>/' , GroupDetailView.as_view(),name='get_group'),
     path('commitment_roles/', CommitmentRoleListView.as_view(),name='commitment_roles'),
     path('teams/<int:event_id>/',TeamListView.as_view(),name='teams'),
-    path('create_team/<int:event_id>/',TeamListCreateView.as_view(),name='create_team')
-
+    path('create_team/<int:event_id>/',TeamListCreateView.as_view(),name='create_team'),
+    path('teams/',TeamListView.as_view(),name='all_teams'),
+    path('team/<int:pk>/',TeamDetailView.as_view(),name='team'),
 ]
 
 
+ 

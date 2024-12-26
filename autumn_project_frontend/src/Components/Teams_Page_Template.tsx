@@ -27,6 +27,10 @@ const TeamTemplatePage: React.FC = () => {
     navigate("/create_team", { state: { event_id } }); 
   };
 
+  const handleYourTeams = () =>{
+    navigate('/your_teams')
+  }
+
   
     const handleNavigateProfile = () => {
       navigate("/edit_profile")
@@ -46,7 +50,7 @@ const TeamTemplatePage: React.FC = () => {
         />
         <div className="w-90">
           <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mb-2 mt-2">Add Skills, Projects, and Experience</button>
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2">Your Teams</button>
+          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2" onClick={handleYourTeams}>Your Teams</button>
           <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2">Your Groups</button>
         </div>
       </div>
@@ -58,11 +62,14 @@ const TeamTemplatePage: React.FC = () => {
           {teams.map((team, index) => (
             <TeamCard
               key={index}
-              teamName={team.team_name}
-              teamAdmin="Admin"
-              teamDescription={team.team_description}
-              vacancy={team.max_members}
-              teamProfileLink=""
+              team={team.team}
+              team_name={team.team_name}
+              team_admin_id={team.team_admin_id}
+              team_description={team.team_description}
+              max_members={team.max_members}
+              expectations={team.expectations}
+              admin_expertise={team.admin_expertise}
+              commitment_role_id={team.commitment_role_id}
             />
           ))}
         </div>

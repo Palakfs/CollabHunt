@@ -21,6 +21,9 @@ import SignupPage from './Pages/Signup';
 import ReactDOM from 'react-dom/client';
 import {BrowserRouter ,Route, Routes} from 'react-router-dom'
 import { channeliRoute } from './route';
+import TeamProfile from './Components/Team_Profile';
+import YourTeams from './Components/Your_Teams'
+
 
 export {}; 
 
@@ -40,6 +43,8 @@ function App() {
       <Route path='/groups' element = {<GroupTemplatePage/>}></Route>
       <Route path='/teams' element = {<TeamTemplatePage/>}></Route>
       <Route path='/create_team' element = {<CreateTeamForm/>}></Route>
+      <Route path='/team' element = {<TeamProfile/>}></Route>
+      <Route path='/your_teams' element = {<YourTeams/>}></Route>
       </Routes>
      </BrowserRouter> 
     </>

@@ -66,6 +66,7 @@ const CreateTeamForm = () => {
               "admin_expertise": data['Your Expertise'] || "",
               "event_id": event_id,
               "team_member_id":teamMemberId,
+              "team_admin_id":userId??0 ,
             };
         
             console.log('Payload:', payload);

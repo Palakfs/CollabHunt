@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createTeam, fetchTeams } from '../thunks/teamThunk';
+import { createTeam, fetchTeams,getTeam , fetchAllTeams } from '../thunks/teamThunk';
 
 interface TeamState {
   loading: boolean;
@@ -14,6 +14,7 @@ interface TeamState {
     commitment_role_id:number;
     expectations: string;
     admin_expertise: string;
+    team_admin_id: number; 
   }[];
 }
 
@@ -51,6 +52,31 @@ const teamSlice = createSlice({
       .addCase(fetchTeams.rejected, (state, action) => {
         state.loading = false;
         state.error = typeof action.payload === 'string' ? action.payload : 'Failed to fetch teams';
+      })
+      .addCase(fetchAllTeams.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllTeams.fulfilled, (state, action) => {
+        state.loading = false;
+        state.teams = action.payload;
+      })
+      .addCase(fetchAllTeams.rejected, (state, action) => {
+        state.loading = false;
+        state.error = typeof action.payload === 'string' ? action.payload : 'Failed to fetch teams';
+      })
+      .addCase(getTeam.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getTeam.fulfilled, (state, action) => {
+        state.loading = false;
+        const team = action.payload; 
+        state.teams = state.teams.map((t) => (t.team === team.team ? team : t));
+    })
+      .addCase(getTeam.rejected, (state, action) => {
+        state.loading = false;
+        state.error = typeof action.payload === 'string' ? action.payload : 'Failed to fetch team';
       });
   },
 });
