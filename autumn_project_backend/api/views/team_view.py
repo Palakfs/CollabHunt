@@ -31,7 +31,6 @@ class TeamListCreateView(generics.ListCreateAPIView):
 class TeamDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
-    permission_classes = [IsTeamAdmin]
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -40,8 +39,6 @@ class TeamDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        if instance.event_admin != request.user:
-            return Response({'detail': 'No Permission Access'}, status=status.HTTP_403_FORBIDDEN)
         partial = kwargs.pop('partial', False)
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)

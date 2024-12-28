@@ -8,6 +8,7 @@ import experienceReducer from '../features/slices/experienceSlice'
 import profileReducer from '../features/slices/profileSlice'
 import commitmentRoleReducer from '../features/slices/commitmentRoleSlice'
 import teamReducer from '../features/slices/teamSlice'
+import joiningRequestReducer from '../features/slices/joiningRequestSlice'
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,8 @@ const store = configureStore({
     profile : profileReducer,
     commitment : commitmentRoleReducer,
     team : teamReducer,
+    joiningRequest : joiningRequestReducer ,
+    
   },
 });
 

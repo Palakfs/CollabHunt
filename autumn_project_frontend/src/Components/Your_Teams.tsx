@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllTeams } from '../features/thunks/teamThunk';
 import { AppDispatch, RootState } from '../Redux/store';
 import ProfileDisplayCard from './Profile_Display_Card';
-import TeamCard from './Team_Card';
+import YourTeamCard from './Your_Team_Card';
 import { useNavigate } from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
 
@@ -24,11 +24,11 @@ const YourTeams: React.FC = () => {
       const decodedToken = jwtDecode<JwtPayload>(token);
       setUserId(decodedToken.user_id);
     }
-  }, []); // Decode token once
+  }, []); 
 
   useEffect(() => {
     dispatch(fetchAllTeams()).catch(() => console.error('Failed to fetch teams'));
-  }, [dispatch]); // Fetch all teams once
+  }, [dispatch]); 
 
   const handleNavigateProfile = () => {
     navigate('/edit_profile');
@@ -65,7 +65,7 @@ const YourTeams: React.FC = () => {
         <h1 className="text-xl font-bold mb-4">Your Teams</h1>
         <div className="flex flex-col space-y-4">
           {userTeams.map((team, index) => (
-            <TeamCard
+            <YourTeamCard
               key={index}
               team={team.team}
               team_name={team.team_name}

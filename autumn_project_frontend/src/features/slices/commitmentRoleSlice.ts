@@ -14,7 +14,7 @@ const initialState: CommitmentRoleState = {
 };
 
 const commitmentRoleSlice = createSlice({
-  name: 'category',
+  name: 'commitment',
   initialState,
   reducers: {},
   extraReducers: (builder) => {

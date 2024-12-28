@@ -27,6 +27,7 @@ from api.views.project_view import ProjectListCreateView , ProjectDetailView
 from api.views.experienceView import ExperienceDetailView , ExperienceListCreateView
 from api.views.commitment_role_view import CommitmentRoleListView
 from api.views.team_view import TeamListView , TeamListCreateView ,  TeamDetailView
+from api.views.joining_request_view import RequestListView , JoiningRequestDetailView , JoiningRequestListCreateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -56,6 +57,9 @@ urlpatterns = [
     path('create_team/<int:event_id>/',TeamListCreateView.as_view(),name='create_team'),
     path('teams/',TeamListView.as_view(),name='all_teams'),
     path('team/<int:pk>/',TeamDetailView.as_view(),name='team'),
+    path('requests/<int:team_id>/',RequestListView.as_view(),name='requests'),
+    path('review_request/<int:pk>/',JoiningRequestDetailView.as_view(),name='review_request'),
+    path('create_request/<int:team_id>/', JoiningRequestListCreateView.as_view(),name='create_request')
 ]
 
 

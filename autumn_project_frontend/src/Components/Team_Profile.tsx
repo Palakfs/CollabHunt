@@ -5,10 +5,13 @@ import { fetchCommitmentRoles } from '../features/thunks/commitmentRoleThunk';
 import { AppDispatch, RootState } from '../Redux/store';
 import PersonProfileCard from './Person_Profile_Card';
 import { useLocation } from 'react-router-dom';
+import { createJoiningRequest } from '../features/thunks/joiningRequestThunk';
+import { useNavigate } from 'react-router-dom';
 
 const TeamProfile: React.FC = () => {
   const location = useLocation();
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const { state } = location;
   const {
@@ -46,6 +49,32 @@ const TeamProfile: React.FC = () => {
     return <p>Error loading team details: {error}</p>;
   }
 
+  const handleSubmit = () => {
+            
+              const payload = {
+                "team_id": team_id,
+                "is_reviewed":false,
+                "is_accepted":false
+              };
+          
+              console.log('Payload:', payload);
+          
+          
+              dispatch(createJoiningRequest(payload))
+                .unwrap()
+                .then(() => {
+                  alert('Request sent successfully');
+                  navigate("/teams"); 
+                })
+                .catch((err) => {
+                  console.error('Error creating team:', err);
+                  if (err.response && err.response.data) {
+                    console.log('Server Error Response:', err.response.data);
+                  }
+                });
+                
+            };
+
   return (
     <div className="bg-blue-100 min-h-screen min-w-full flex items-center justify-between">
       <div className="bg-white p-4 rounded-lg shadow-md max-w-2xl w-full mx-auto">
@@ -56,8 +85,8 @@ const TeamProfile: React.FC = () => {
         <div className="mt-6">
           <h2 className="text-lg font-semibold">Team Admin</h2>
           <PersonProfileCard
+            userId={team_admin}
             avatarUrl=""
-            name={team_admin || 'Admin'}
             profileLink=""
           />
           <p><strong>Commitment Level:</strong> {commitmentRoleName}</p>
@@ -68,6 +97,7 @@ const TeamProfile: React.FC = () => {
           <button
             type="submit"
             className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            onClick={handleSubmit}
           >
             Send Joining Request
           </button>

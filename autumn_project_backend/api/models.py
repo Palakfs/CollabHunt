@@ -108,8 +108,9 @@ class Team(models.Model):
     commitment_role_id = models.ForeignKey(Commitment_Role, on_delete=models.CASCADE,related_name='role_teams')
 
 class Joining_Request(models.Model):
-    request = models.AutoField(primary_key=True)
+    joining_request = models.AutoField(primary_key=True)
     team_id = models.ForeignKey(Team, on_delete=models.CASCADE)
-    person_expertise = models.TextField(null=True)
+    sender_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     is_accepted = models.BooleanField()
+    is_reviewed = models.BooleanField(default=0)
     

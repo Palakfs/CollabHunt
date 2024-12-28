@@ -45,6 +45,7 @@ function App() {
       <Route path='/create_team' element = {<CreateTeamForm/>}></Route>
       <Route path='/team' element = {<TeamProfile/>}></Route>
       <Route path='/your_teams' element = {<YourTeams/>}></Route>
+      <Route path='/manage_team' element = {<ManageTeam/>}></Route>
       </Routes>
      </BrowserRouter> 
     </>
