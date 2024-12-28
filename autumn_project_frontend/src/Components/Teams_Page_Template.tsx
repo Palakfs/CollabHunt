@@ -35,6 +35,11 @@ const TeamTemplatePage: React.FC = () => {
     const handleNavigateProfile = () => {
       navigate("/edit_profile")
     };
+
+  
+    const handleGroup = () => {
+      navigate('/groups')
+    }
   
     if (loading) return <p>Loading teams...</p>;
     if (error) return <p>Error loading teams: {error}</p>;
@@ -49,9 +54,9 @@ const TeamTemplatePage: React.FC = () => {
           profile_description="Welcome to your profile!" 
         />
         <div className="w-90">
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mb-2 mt-2">Add Skills, Projects, and Experience</button>
+          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mb-2 mt-2" onClick={handleNavigateProfile}>Add Skills, Projects, and Experience</button>
           <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2" onClick={handleYourTeams}>Your Teams</button>
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2">Your Groups</button>
+          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2" onClick={handleGroup}>Your Groups</button>
         </div>
       </div>
 

@@ -5,7 +5,7 @@ class GroupSerializer(serializers.ModelSerializer):
     member_id = serializers.PrimaryKeyRelatedField(queryset=Profile.objects.all(), many=True)
     class Meta:
         model = Group
-        fields = ['group', 'group_name', 'group_description', 'group_admin', 'member_id']
+        fields = ['group', 'group_name', 'group_description', 'group_admin', 'member_id','group_admin']
         read_only_fields = ['group_admin'] 
         
         def create(self, validated_data):

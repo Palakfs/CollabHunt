@@ -4,7 +4,7 @@ from api.models import Event
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
-        fields = ['event', 'event_title', 'event_category_id', 'visible_to_group_id', 'event_description', 'registration_deadline', 'additional_details_link']
+        fields = ['event', 'event_title', 'event_category_id', 'visible_to_group_id', 'event_description', 'registration_deadline', 'additional_details_link','event_admin']
         read_only_fields = ['event_admin']  
 
     def create(self, validated_data):

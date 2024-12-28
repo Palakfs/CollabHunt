@@ -12,6 +12,7 @@ interface EventState {
     event_description: string;
     registration_deadline: string;
     additional_details_link: string;
+    event_admin: string;
   }[];
 }
 

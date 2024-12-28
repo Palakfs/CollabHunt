@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axiosInstance from '../utils/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -13,6 +14,25 @@ interface EventCardProps {
 
 const EventCard: React.FC<EventCardProps> = ({ eventName, eventAdmin, eventDescription, eventDeadline, linkForMoreDetails, event_id }) => {
   const navigate = useNavigate();
+  const [username, setUsername] = useState<string | null>(null);
+  const [errorState, setErrorState] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        
+        const profileResponse = await axiosInstance.get(`/get_user_profile/${eventAdmin}`);
+        setUsername(profileResponse.data.full_name);
+      } catch (err) {
+        setErrorState('Error fetching user data');
+        console.error('Error fetching user profile:', err);
+      }
+    };
+
+    if (eventAdmin) {
+      fetchUserData();
+    }
+  }, [eventAdmin]); 
   
   const handleCardClick = () => {
     navigate("/teams", { state: { event_id , eventName } });
@@ -25,7 +45,7 @@ const EventCard: React.FC<EventCardProps> = ({ eventName, eventAdmin, eventDescr
       <div className="flex justify-between items-start">
         <div className="flex flex-col m-1">
           <h2 className="text-lg font-semibold mb-1">{eventName}</h2>
-          <p className="text-sm text-gray-600">Added by {eventAdmin}</p>
+          <p className="text-sm text-gray-600">Added by {username}</p>
         </div>
         <div className="flex flex-col m-1 text-right">
           <p className="text-sm text-gray-600 mb-1">Event Deadline: {eventDeadline}</p>

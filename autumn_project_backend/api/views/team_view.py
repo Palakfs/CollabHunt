@@ -26,7 +26,8 @@ class TeamListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         event_id = self.kwargs.get('event_id')
         event = get_object_or_404(Event, pk=event_id)  
-        serializer.save(team_admin_id=self.request.user, event_id=event)
+        team = serializer.save(team_admin_id=self.request.user, event_id=event)
+        team.team_member_id.add(self.request.user)
 
 class TeamDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Team.objects.all()

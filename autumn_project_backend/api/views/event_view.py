@@ -9,9 +9,11 @@ from rest_framework.views import APIView
 
 class EventListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
+    
 
     def get(self, request):
-        events = Event.objects.all()
+        user_profile = request.user.profile
+        events = Event.objects.filter(visible_to_group_id__member_id=user_profile)
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
 

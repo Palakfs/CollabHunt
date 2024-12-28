@@ -34,6 +34,14 @@ const YourTeams: React.FC = () => {
     navigate('/edit_profile');
   };
 
+  const handleGroup = () => {
+    navigate('/groups')
+  }
+  
+  const handleEvents = () =>{
+    navigate('/events')
+  }
+
   if (loading) return <p>Loading teams...</p>;
   if (error) return <p>Error loading teams: {error}</p>;
   if (!userId) return <p>Loading user information...</p>;
@@ -49,13 +57,13 @@ const YourTeams: React.FC = () => {
           profile_description="Welcome to your profile!"
         />
         <div className="w-90">
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mb-2 mt-2">
+          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mb-2 mt-2" onClick={handleNavigateProfile}>
             Add Skills, Projects, and Experience
           </button>
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2">
-            Your Teams
+          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2" onClick={handleEvents}>
+            Events
           </button>
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2">
+          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2" onClick={handleGroup}>
             Your Groups
           </button>
         </div>

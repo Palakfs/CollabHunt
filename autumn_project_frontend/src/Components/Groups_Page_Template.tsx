@@ -25,6 +25,14 @@ const GroupTemplatePage: React.FC = () => {
     navigate("/edit_profile")
   };
 
+  const handleYourTeams = () =>{
+    navigate('/your_teams')
+  }
+
+  const handleEvents = () =>{
+    navigate('/events')
+  }
+
   if (loading) return <p>Loading groups...</p>;
   if (error) return <p>Error loading groups: {error}</p>;
 
@@ -38,8 +46,8 @@ const GroupTemplatePage: React.FC = () => {
         />
         <div className="w-90">
           <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mb-2 mt-2" onClick={handleNavigateProfile}>Add Skills, Projects, and Experience</button>
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2">Your Teams</button>
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2" >Your Groups</button>
+          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2" onClick={handleYourTeams}>Your Teams</button>
+          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2" onClick={handleEvents}>Events</button>
         </div>
       </div>
 
@@ -50,7 +58,7 @@ const GroupTemplatePage: React.FC = () => {
             <GroupCard
               groupName={group.name}
               groupDescription={group.group_description}
-              groupAdmin="Admin"
+              groupAdmin={group.group_admin}
             />
           ))}
         </div>

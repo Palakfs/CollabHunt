@@ -45,19 +45,19 @@ export const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }
     const option = event.target.value;
 
    
-    setFormData({
-      ...formData,
-      [label]: option,
-    });
-
-    
     if (option && (!selectedOptions[label] || !selectedOptions[label].includes(option))) {
       setSelectedOptions({
         ...selectedOptions,
         [label]: [...(selectedOptions[label] || []), option],
       });
+  
+      
+      setFormData({
+        ...formData,
+        [label]: [...(formData[label] || []), option],
+      });
     }
-
+  
     
     if (errors[label]) {
       setErrors((prevErrors) => {
@@ -70,14 +70,15 @@ export const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }
 
  
   const handleRemoveOption = (label: string, option: string) => {
-    setFormData({
-      ...formData,
-      [label]: option, 
-    });
-
     setSelectedOptions({
       ...selectedOptions,
       [label]: selectedOptions[label].filter((item) => item !== option),
+    });
+  
+    
+    setFormData({
+      ...formData,
+      [label]: (formData[label] || []).filter((item: string) => item !== option),
     });
   };
 

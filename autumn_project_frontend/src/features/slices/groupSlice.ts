@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { fetchGroups } from '../thunks/groupThunk';
 
 interface GroupState {
-  groups: { id: number; name: string , group_description: string}[];
+  groups: { id: number; name: string , group_description: string,group_admin:string}[];
   loading: boolean;
   error: string | null;
 }
@@ -29,6 +29,7 @@ const groupSlice = createSlice({
           id: group.group,
           name: group.group_name,
           group_description : group.group_description,
+          group_admin: group.group_admin,
         }));
       })
       .addCase(fetchGroups.rejected, (state, action) => {

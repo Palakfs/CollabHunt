@@ -10,7 +10,8 @@ class GroupListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        groups = Group.objects.all()
+        user_profile = request.user.profile 
+        groups = Group.objects.filter(member_id=user_profile)
         serializer = GroupSerializer(groups, many=True)
         return Response(serializer.data)
 
@@ -21,7 +22,8 @@ class GroupListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        serializer.save(group_admin=self.request.user)
+        group = serializer.save(group_admin=self.request.user)
+        group.member_id.add(self.request.user.profile)
 
 class GroupDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Group.objects.all()

@@ -101,7 +101,7 @@ const EventTemplatePage: React.FC = () => {
               key={index}
               event_id={event.event}
               eventName={event.event_title}
-              eventAdmin={'Admin'}
+              eventAdmin={event.event_admin}
               eventDescription={event.event_description}
               eventDeadline={new Date(event.registration_deadline).toLocaleDateString()}
               linkForMoreDetails={event.additional_details_link}

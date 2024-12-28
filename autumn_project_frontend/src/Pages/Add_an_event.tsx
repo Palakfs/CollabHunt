@@ -21,8 +21,8 @@ const AddEventForm = () => {
 
   const fields = [
     { label: 'Event Title', type: 'text', placeholder: 'Enter the event title' },
-    { label: 'Category', type: 'select', options: categories.map((cat) => cat.name) },  
-    { label: 'Visible To', type: 'select', options: groups.map((group) => group.name) },  
+    { label: 'Category', type: 'select', options: categories.map((cat) => cat.name) , isMultiple: true,},  
+    { label: 'Visible To', type: 'select', options: groups.map((group) => group.name) , isMultiple: true,},  
     { label: 'Registration Deadline', type: 'date' },
     { label: 'Event Description', type: 'text', placeholder: 'Enter the event description', isTextArea: true },
     { label: 'Link For More Details', type: 'text', placeholder: 'Enter the link for more details' },
@@ -30,14 +30,21 @@ const AddEventForm = () => {
 
   const handleSubmit = (data: { [key: string]: any }) => {
     
-    const selectedCategory = categories.find((cat) => cat.name === data['Category']);
+    const selectedCategoryIds = (data['Category'] || []).map((categoryName: string) => {
+      const category = categories.find((cat) => cat.name === categoryName);
+      return category ? category.id : null;
+    }).filter((id: number | null) => id !== null);
   
-    const selectedGroup = groups.find((group) => group.name === data['Visible To']);
+    const selectedGroupIds = (data['Visible To'] || []).map((groupName: string) => {
+      const group = groups.find((grp) => grp.name === groupName);
+      return group ? group.id : null;
+    }).filter((id: number | null) => id !== null);
+
 
     const payload = {
       "event_title": data['Event Title'],
-      "event_category_id": selectedCategory ? [selectedCategory.id] : [],  
-      "visible_to_group_id": selectedGroup ? [selectedGroup.id] : [],  
+      "event_category_id": selectedCategoryIds,  
+      "visible_to_group_id": selectedGroupIds,  
       "event_description": data['Event Description'],
       "registration_deadline": data['Registration Deadline'],
       "additional_details_link": data['Link For More Details'] || "",
