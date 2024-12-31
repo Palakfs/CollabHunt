@@ -11,7 +11,14 @@ class ExperienceListCreateView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         
-        return Experience.objects.filter(profile=self.request.user.profile)
+        profile_id = self.request.query_params.get('profile', None)
+        
+       
+        if not profile_id:
+            return Experience.objects.all()
+        
+        
+        return Experience.objects.filter(profile=profile_id)
 
     def perform_create(self, serializer):
        
@@ -21,7 +28,7 @@ class ExperienceDetailView(generics.RetrieveUpdateDestroyAPIView):
    
     queryset = Experience.objects.all()
     serializer_class = ExperienceSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsExperienceOwner]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def retrieve(self, request, *args, **kwargs):
       

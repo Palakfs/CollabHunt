@@ -48,7 +48,7 @@ class Project(models.Model):
     project_description = models.TextField(null=True,blank=True)
     start_date = models.DateField(null=True,blank=True)
     end_date = models.DateField(null=True,blank=True)
-    attachments_url = models.URLField(null=True,blank=True)
+    attachments_url = models.ImageField(upload_to='project_attachments/', null=True, blank=True) 
     field = models.CharField(max_length=255,null=True,blank=True)
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='projects')
 
@@ -64,7 +64,7 @@ class Profile(models.Model):
     full_name = models.CharField(max_length=255,null=True,blank=True)
     contact_number = models.PositiveSmallIntegerField(null=True,blank=True)
     skills = models.JSONField(default=list, blank=True)
-    avatar_url = models.URLField(null=True,blank=True)
+    avatar_url = models.ImageField(upload_to='avatars/', null=True, blank=True)
     
 
     def __str__(self):

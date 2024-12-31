@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path , include
 from api.views.token_view import UserRegistrationView, ObtainAuthToken
 from api.views import oauth_view , profile_view , token_view
-from api.views.event_view import EventListCreateView , EventListView
+from api.views.event_view import EventListCreateView , EventListView , EventDetailView
 from api.views.group_view import GroupListView , GroupListCreateView , GroupDetailView
 from api.views.category_view import CategoryListView
 from api.views.get_user_enrol_view import GetUserEnrol
@@ -28,6 +28,10 @@ from api.views.experienceView import ExperienceDetailView , ExperienceListCreate
 from api.views.commitment_role_view import CommitmentRoleListView
 from api.views.team_view import TeamListView , TeamListCreateView ,  TeamDetailView
 from api.views.joining_request_view import RequestListView , JoiningRequestDetailView , JoiningRequestListCreateView
+
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -59,8 +63,8 @@ urlpatterns = [
     path('team/<int:pk>/',TeamDetailView.as_view(),name='team'),
     path('requests/<int:team_id>/',RequestListView.as_view(),name='requests'),
     path('review_request/<int:pk>/',JoiningRequestDetailView.as_view(),name='review_request'),
-    path('create_request/<int:team_id>/', JoiningRequestListCreateView.as_view(),name='create_request')
-]
-
+    path('create_request/<int:team_id>/', JoiningRequestListCreateView.as_view(),name='create_request'),
+    path('event/<int:pk>/', EventDetailView.as_view(),name='event')
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
  

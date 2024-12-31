@@ -5,11 +5,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from api.permissions.profile_permissions import IsProfileOwner
 from api.permissions.team_permissions import IsTeamAdmin
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 class JoiningRequestProfileListView(generics.ListAPIView):
     serializer_class = ProfileSerializer
-    permission_classes = [permissions.IsAuthenticated , IsTeamAdmin]  
+    permission_classes = [permissions.IsAuthenticated ]  
 
     def get_queryset(self):
         team_id = self.kwargs['team_id']
@@ -36,7 +37,7 @@ class TeamAdminProfileView(generics.RetrieveAPIView):
 class ProfileDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [permissions.IsAuthenticated, IsProfileOwner]
+    parser_classes = [MultiPartParser, FormParser]
 
     def get_object(self):
         
@@ -57,6 +58,7 @@ class ProfileDetailView(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
+        print(request.data) 
         instance = self.get_object()
 
         serializer = self.get_serializer(instance, data=request.data, partial=True)

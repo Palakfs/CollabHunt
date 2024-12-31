@@ -5,44 +5,69 @@ import { AppDispatch, RootState } from '../Redux/store';
 import ProfileDisplayCard from './Profile_Display_Card';
 import YourTeamCard from './Your_Team_Card';
 import { useNavigate } from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
+import axiosInstance from '../utils/axiosInstance';
 
 interface JwtPayload {
   user_id: string;
+}
+
+interface ProfileData {
+  full_name: string | null;
+  avatar_url: string | null;
+  contact_number: number | null;
+  email: string | null;
+  skills: string[];
 }
 
 const YourTeams: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [userId, setUserId] = useState<string | null>(null);
-
-  const { teams, loading, error } = useSelector((state: RootState) => state.team);
+  const [profile, setProfile] = useState<ProfileData | null>(null);
+  const [profileLoading, setProfileLoading] = useState<boolean>(true); 
+  const { teams, loading: teamsLoading, error } = useSelector((state: RootState) => state.team);
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      const decodedToken = jwtDecode<JwtPayload>(token);
-      setUserId(decodedToken.user_id);
-    }
-  }, []); 
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem('access_token');
+        if (token) {
+          const decodedToken = jwtDecode<JwtPayload>(token);
+          setUserId(decodedToken.user_id);
+
+          const response = await axiosInstance.get(`/get_user_profile/${decodedToken.user_id}/`);
+          setProfile(response.data);
+        } else {
+          throw new Error('Access token missing.');
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      } finally {
+        setProfileLoading(false); 
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   useEffect(() => {
     dispatch(fetchAllTeams()).catch(() => console.error('Failed to fetch teams'));
-  }, [dispatch]); 
+  }, [dispatch]);
 
   const handleNavigateProfile = () => {
     navigate('/edit_profile');
   };
 
   const handleGroup = () => {
-    navigate('/groups')
-  }
-  
-  const handleEvents = () =>{
-    navigate('/events')
-  }
+    navigate('/groups');
+  };
 
-  if (loading) return <p>Loading teams...</p>;
+  const handleEvents = () => {
+    navigate('/events');
+  };
+
+  if (teamsLoading || profileLoading) return <p>Loading...</p>;
   if (error) return <p>Error loading teams: {error}</p>;
   if (!userId) return <p>Loading user information...</p>;
 
@@ -52,18 +77,27 @@ const YourTeams: React.FC = () => {
     <div className="flex w-full h-screen p-4 bg-blue-100">
       <div className="w-1/3 flex flex-col space-y-4 p-4 flex-grow">
         <ProfileDisplayCard
-          avatarUrl="https://via.placeholder.com/150"
-          name="User Name"
+          avatarUrl={profile?.avatar_url||"https://via.placeholder.com/150"}
+          name={profile?.full_name || 'User Name'}
           profile_description="Welcome to your profile!"
         />
         <div className="w-90">
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mb-2 mt-2" onClick={handleNavigateProfile}>
+          <button
+            className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mb-2 mt-2"
+            onClick={handleNavigateProfile}
+          >
             Add Skills, Projects, and Experience
           </button>
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2" onClick={handleEvents}>
+          <button
+            className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2"
+            onClick={handleEvents}
+          >
             Events
           </button>
-          <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2" onClick={handleGroup}>
+          <button
+            className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2"
+            onClick={handleGroup}
+          >
             Your Groups
           </button>
         </div>
@@ -83,6 +117,8 @@ const YourTeams: React.FC = () => {
               expectations={team.expectations}
               admin_expertise={team.admin_expertise}
               commitment_role_id={team.commitment_role_id}
+              event_id={team.event_id}
+              team_member_id={team.team_member_id}
             />
           ))}
         </div>

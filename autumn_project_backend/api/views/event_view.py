@@ -29,7 +29,7 @@ class EventListCreateView(generics.ListCreateAPIView):
 class EventDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    permission_classes = [IsEventAdmin]
+    
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -38,8 +38,7 @@ class EventDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        if instance.event_admin != request.user:
-            return Response({'detail': 'No Permission Access'}, status=status.HTTP_403_FORBIDDEN)
+        
         partial = kwargs.pop('partial', False)
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
@@ -48,8 +47,7 @@ class EventDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        if instance.event_admin != request.user:
-            return Response({'detail': 'No Permission Access'}, status=status.HTTP_403_FORBIDDEN)
+        
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
 

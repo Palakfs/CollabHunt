@@ -5,6 +5,7 @@ import { fetchProfiles } from '../thunks/profileThunk';
 interface Profile {
   username: number;
   full_name: string;
+  
 }
 
 interface ProfileState {

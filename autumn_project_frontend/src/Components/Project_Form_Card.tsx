@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../Redux/store';
 import { fetchUserProjects, addProject, deleteProject } from '../features/thunks/projectsThunk';
 import { AiOutlinePlus, AiOutlineClose } from 'react-icons/ai';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
 interface DecodedToken {
   user_id: number;
@@ -20,7 +20,7 @@ const ProjectFormCard: React.FC = () => {
   const [description, setDescription] = useState<string>('');
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [image, setImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null); 
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [profileId, setProfileId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -29,10 +29,7 @@ const ProjectFormCard: React.FC = () => {
       try {
         const decodedToken: DecodedToken = jwtDecode<DecodedToken>(token);
         setProfileId(decodedToken.user_id);
-
-        if (decodedToken.user_id) {
-          dispatch(fetchUserProjects(decodedToken.user_id));
-        }
+        dispatch(fetchUserProjects(decodedToken.user_id));
       } catch (error) {
         console.error('Failed to decode token or fetch user projects:', error);
       }
@@ -47,17 +44,18 @@ const ProjectFormCard: React.FC = () => {
       return;
     }
 
-    const newProject = {
-      project_title: newTopic.trim(),
-      project_description: description.trim(),
-      start_date: startDate,
-      end_date: endDate,
-      field: newField.trim(),
-      profile: profileId,
-      attachments_url: imagePreview, 
-    };
+    const formData = new FormData();
+    formData.append('project_title', newTopic.trim());
+    formData.append('project_description', description.trim());
+    formData.append('start_date', startDate);
+    formData.append('end_date', endDate);
+    formData.append('field', newField.trim());
+    formData.append('profile', profileId.toString());
+    if (image) {
+      formData.append('attachments_url', image);
+    }
 
-    dispatch(addProject(newProject));
+    dispatch(addProject(formData));
     resetForm();
   };
 
@@ -80,7 +78,6 @@ const ProjectFormCard: React.FC = () => {
     const file = e.target.files?.[0] || null;
     setImage(file);
 
-   
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -99,7 +96,6 @@ const ProjectFormCard: React.FC = () => {
         </button>
       </div>
 
-   
       {isAdding && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
@@ -148,10 +144,7 @@ const ProjectFormCard: React.FC = () => {
               {imagePreview && (
                 <img src={imagePreview} alt="Preview" className="w-32 h-32 object-cover mt-2" />
               )}
-              <button
-                onClick={handleAddProject}
-                className="mt-2 w-full bg-blue-500 text-white p-2 rounded-lg"
-              >
+              <button onClick={handleAddProject} className="mt-2 w-full bg-blue-500 text-white p-2 rounded-lg">
                 Submit
               </button>
             </div>
@@ -159,7 +152,6 @@ const ProjectFormCard: React.FC = () => {
         </div>
       )}
 
-      
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
       <ul>
@@ -168,21 +160,19 @@ const ProjectFormCard: React.FC = () => {
             key={project.project}
             className="flex justify-between items-center mb-2 p-2 border rounded-lg"
           >
-            <div>
+            <div className='flex justify-between align-center'>
+              <div className='mr-96'>
               <h3 className="font-semibold text-left ml-1">
                 {project.project_title} in {project.field}
               </h3>
               <p className="text-sm text-gray-600 text-left ml-1">
                 {project.start_date} - {project.end_date}
               </p>
-              <p className="text-sm text-gray-600 text-left ml-1">{project.project_description}</p>
+              <p className="text-sm text-gray-600 text-left ml-1">{project.project_description}</p></div>
+              <div className='ml-40'>
               {project.attachments_url && (
-                <img
-                  src={project.attachments_url}
-                  alt="Project Attachment"
-                  className="w-32 h-32 object-cover mt-2"
-                />
-              )}
+                <img src={project.attachments_url} alt="Project Attachment" className="w-20 h-20 object-cover mt-2" />
+              )}</div>
             </div>
             <button
               onClick={() => handleDeleteProject(project.project)}

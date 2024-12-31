@@ -8,6 +8,7 @@ interface FormComponentProps {
     placeholder?: string;
     isTextArea?: boolean;
     options?: string[];
+    isSingleSelect?: boolean; 
   }[];
   onSubmit: (data: { [key: string]: any }) => void;
 }
@@ -18,7 +19,6 @@ export const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.])([\/\w .-]*)*\/?$/;
 
-  
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     label: string
@@ -30,7 +30,6 @@ export const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }
       [label]: value,
     });
 
-    
     if (errors[label]) {
       setErrors((prevErrors) => {
         const updatedErrors = { ...prevErrors };
@@ -40,25 +39,41 @@ export const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }
     }
   };
 
-  
+  const handleSingleSelectChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+    label: string
+  ) => {
+    const value = event.target.value;
+
+    setFormData({
+      ...formData,
+      [label]: value,
+    });
+
+    if (errors[label]) {
+      setErrors((prevErrors) => {
+        const updatedErrors = { ...prevErrors };
+        delete updatedErrors[label];
+        return updatedErrors;
+      });
+    }
+  };
+
   const handleAddOption = (event: React.ChangeEvent<HTMLSelectElement>, label: string) => {
     const option = event.target.value;
 
-   
     if (option && (!selectedOptions[label] || !selectedOptions[label].includes(option))) {
       setSelectedOptions({
         ...selectedOptions,
         [label]: [...(selectedOptions[label] || []), option],
       });
-  
-      
+
       setFormData({
         ...formData,
         [label]: [...(formData[label] || []), option],
       });
     }
-  
-    
+
     if (errors[label]) {
       setErrors((prevErrors) => {
         const updatedErrors = { ...prevErrors };
@@ -68,35 +83,29 @@ export const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }
     }
   };
 
- 
   const handleRemoveOption = (label: string, option: string) => {
     setSelectedOptions({
       ...selectedOptions,
       [label]: selectedOptions[label].filter((item) => item !== option),
     });
-  
-    
+
     setFormData({
       ...formData,
       [label]: (formData[label] || []).filter((item: string) => item !== option),
     });
   };
 
-  
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const newErrors: { [key: string]: string } = {};
 
-    
     fields.forEach((field) => {
       const value = formData[field.label];
 
-     
       if ((field.label !== 'Link For More Details' && field.label !== 'Visible To') && !value) {
         newErrors[field.label] = `${field.label} is required.`;
       }
 
-     
       if (field.label === 'Link For More Details') {
         if (value && !urlRegex.test(value)) {
           newErrors[field.label] = 'Please enter a valid URL.';
@@ -106,7 +115,6 @@ export const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }
 
     setErrors(newErrors);
 
-   
     if (Object.keys(newErrors).length === 0) {
       onSubmit({ ...formData, selectedOptions });
     } else {
@@ -118,7 +126,28 @@ export const FormComponent: React.FC<FormComponentProps> = ({ fields, onSubmit }
     <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md max-w-2xl w-full">
       {fields.map((field, index) => (
         <div key={index}>
-          {field.type === 'select' ? (
+          {field.type === 'select' && field.isSingleSelect ? (
+            <>
+              <label className="block text-gray-700 font-bold mb-2">{field.label}</label>
+              <select
+                onChange={(event) => handleSingleSelectChange(event, field.label)}
+                value={formData[field.label] || ""}
+                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="" disabled>
+                  Select an option
+                </option>
+                {field.options?.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              {errors[field.label] && (
+                <p className="text-red-500 text-sm mb-1">{errors[field.label]}</p>
+              )}
+            </>
+          ) : field.type === 'select' ? (
             <>
               <label className="block text-gray-700 font-bold mb-2">{field.label}</label>
               <select

@@ -6,6 +6,7 @@ import ProjectFormCard from './Project_Form_Card';
 import ExperienceFormCard from './Experience_Form_Component';
 import axiosInstance from '../utils/axiosInstance';
 import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 
 interface JwtPayload {
   user_id: string;
@@ -23,6 +24,7 @@ const EditProfileTemplatePage: React.FC = () => {
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [userId, setUserId] = useState<string | null>(null);
+  const navigate = useNavigate()
 
   const fetchProfile = async () => {
     try {
@@ -47,6 +49,10 @@ const EditProfileTemplatePage: React.FC = () => {
     fetchProfile();
   }, []);
 
+  const handleGroup = () => navigate('/groups');
+  const handleEvents = () => navigate('/events');
+  const handleYourTeams = () => navigate('/your_teams');
+
   if (loading) return <div>Loading...</div>;
 
   return (
@@ -57,6 +63,26 @@ const EditProfileTemplatePage: React.FC = () => {
           name={profile?.full_name || 'User Name'}
           profile_description={'Welcome to your profile!'}
         />
+        <div className="w-90">
+          <button
+            className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mb-2 mt-2"
+            onClick={handleEvents}
+          >
+            Events
+          </button>
+          <button
+            className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2"
+            onClick={handleYourTeams}
+          >
+            Your Teams
+          </button>
+          <button
+            className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mt-2 mb-2"
+            onClick={handleGroup}
+          >
+            Your Groups
+          </button>
+        </div>
       </div>
 
       <div className="w-2/3 flex flex-col max-h-screen overflow-y-auto p-4">

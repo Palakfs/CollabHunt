@@ -5,7 +5,7 @@ import AddEventForm from './Pages/Add_an_event';
 import CreateTeamForm from './Pages/Create_Team';
 import CreateGroupForm from './Pages/Create_Group';
 import PersonProfileCard from './Components/Person_Profile_Card';
-import ManageTeam from './Components/Manage_Team';
+import ManageTeamPage from './Components/Manage_Team';
 import EventCard from './Components/Event_Card';
 import ProfileDisplayCard from './Components/Profile_Display_Card';
 import EventTemplatePage from './Components/Events_Page_Template Component';
@@ -23,6 +23,7 @@ import {BrowserRouter ,Route, Routes} from 'react-router-dom'
 import { channeliRoute } from './route';
 import TeamProfile from './Components/Team_Profile';
 import YourTeams from './Components/Your_Teams'
+import ViewProfilePage from './Components/View_Profile_Page';
 
 
 export {}; 
@@ -45,7 +46,8 @@ function App() {
       <Route path='/create_team' element = {<CreateTeamForm/>}></Route>
       <Route path='/team' element = {<TeamProfile/>}></Route>
       <Route path='/your_teams' element = {<YourTeams/>}></Route>
-      <Route path='/manage_team' element = {<ManageTeam/>}></Route>
+      <Route path='/manage_team' element = {<ManageTeamPage/>}></Route>
+      <Route path='/view_profile' element = {<ViewProfilePage/>}></Route>
       </Routes>
      </BrowserRouter> 
     </>

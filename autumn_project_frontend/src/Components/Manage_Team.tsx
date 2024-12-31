@@ -12,7 +12,7 @@ const ManageTeamPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { state } = location;
-  const { team_id, team_name, max_members, team_admin } = state || {};
+  const { team_id, team_name, max_members, team_admin , eventName  } = state || {};
 
   const { joiningRequests, loading, error } = useSelector((state: RootState) => state.joiningRequest);
 
@@ -52,9 +52,15 @@ const ManageTeamPage: React.FC = () => {
     navigate('/your_teams');
   };
 
+  const personIconSvg = `
+    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+      <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM2 14s-1 0-1-1 1-4 7-4 7 3 7 4-1 1-1 1H2z"/>
+    </svg>
+  `;
+
   return (
     <div className="bg-blue-100 min-h-screen p-8">
-      <h1 className="text-3xl font-bold text-center mb-4">{team_name}</h1>
+      <h1 className="text-3xl font-bold text-center mb-4">{eventName}-{team_name}</h1>
 
       <div className="flex justify-center space-x-4">
         <div className="bg-blue-50 p-4 rounded-lg shadow-md w-1/2 h-8/10 mt-2 ml-2 mr-3 mb-6">
@@ -63,8 +69,8 @@ const ManageTeamPage: React.FC = () => {
             <div key={joiningRequest.joining_request} className='justify-between w-500' >
               <div className="flex items-center mr-4">
                 <div className="flex-1"><PersonProfileCard
-                  avatarUrl=""
-                  profileLink=""
+                 avatarUrl={`data:image/svg+xml;utf8,${encodeURIComponent(personIconSvg)}`}
+                
                   userId={joiningRequest.sender_id}
                 />
                 </div>
@@ -90,7 +96,7 @@ const ManageTeamPage: React.FC = () => {
         <div className="bg-blue-50 p-4 rounded-lg shadow-md w-1/2 mt-2 ml-2 mr-3 mb-6 h-8/10">
           <h2 className="text-lg font-semibold mb-2">Team Members</h2>
           {teamMembers.map((memberId) => (
-            <PersonProfileCard key={memberId} avatarUrl="" profileLink="" userId={memberId} />
+            <PersonProfileCard key={memberId} avatarUrl={`data:image/svg+xml;utf8,${encodeURIComponent(personIconSvg)}`} userId={memberId} />
           ))}
         </div>
       </div>

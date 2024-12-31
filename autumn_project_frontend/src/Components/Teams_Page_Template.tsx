@@ -7,15 +7,56 @@ import TeamCard from './Team_Card';
 import { FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
+import axiosInstance from '../utils/axiosInstance';
+import { jwtDecode } from 'jwt-decode';
+
+interface JwtPayload {
+  user_id: string;
+}
+
+interface ProfileData {
+  full_name: string | null;
+  avatar_url: string|null;
+  contact_number: number | null;
+  email: string | null;
+  skills: string[];
+}
+
 
 
 const TeamTemplatePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
+  const [profile, setProfile] = useState<ProfileData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [userId, setUserId] = useState<string | null>(null);
+  const navigate = useNavigate()
+
+  const fetchProfile = async () => {
+    try {
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        const decodedToken = jwtDecode<JwtPayload>(token);
+        setUserId(decodedToken.user_id);
+
+        const response = await axiosInstance.get(`/get_user_profile/${decodedToken.user_id}/`);
+        setProfile(response.data);
+      } else {
+        throw new Error('Access token missing.');
+      }
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
   const location = useLocation();
   const { event_id, eventName } = location.state || {}; 
 
-  const { teams, loading, error } = useSelector((state: RootState) => state.team);
+  const { teams, error } = useSelector((state: RootState) => state.team);
   
   useEffect(() => {
     if (event_id) {
@@ -48,10 +89,10 @@ const TeamTemplatePage: React.FC = () => {
     <div className="flex w-full h-screen p-4 bg-blue-100">
       
       <div className="w-1/3 flex flex-col space-y-4 p-4 flex-grow">
-      <ProfileDisplayCard 
-          avatarUrl="https://via.placeholder.com/150" 
-          name="User Name" 
-          profile_description="Welcome to your profile!" 
+      <ProfileDisplayCard
+          avatarUrl={profile?.avatar_url||"https://via.placeholder.com/150"}
+          name={profile?.full_name || 'User Name'}
+          profile_description="Welcome to your profile!"
         />
         <div className="w-90">
           <button className="bg-blue-500 text-white py-2 px-4 rounded-md w-full mb-2 mt-2" onClick={handleNavigateProfile}>Add Skills, Projects, and Experience</button>
@@ -75,6 +116,7 @@ const TeamTemplatePage: React.FC = () => {
               expectations={team.expectations}
               admin_expertise={team.admin_expertise}
               commitment_role_id={team.commitment_role_id}
+              team_member_id={team.team_member_id}
             />
           ))}
         </div>

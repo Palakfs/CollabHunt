@@ -11,8 +11,15 @@ class ProjectListCreateView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         
-        return Project.objects.filter(profile=self.request.user.profile)
-
+        profile_id = self.request.query_params.get('profile', None)
+        
+       
+        if not profile_id:
+            return Project.objects.all()
+        
+        
+        return Project.objects.filter(profile=profile_id)
+    
     def perform_create(self, serializer):
        
         serializer.save(profile=self.request.user.profile)
@@ -21,7 +28,7 @@ class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
    
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsProjectOwner]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def retrieve(self, request, *args, **kwargs):
       

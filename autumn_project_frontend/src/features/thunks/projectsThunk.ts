@@ -38,17 +38,19 @@ interface AddProjectPayload {
     attachments_url?: string | null; 
   }
 
-export const addProject = createAsyncThunk<Project, AddProjectPayload>(
-  'projects/addProject',
-  async (projectData, { rejectWithValue }) => {
-    try {
-      const response = await axiosInstance.post<Project>(BASE_URL, projectData);
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data || 'Failed to add project');
+  export const addProject = createAsyncThunk<Project, FormData>(
+    'projects/addProject',
+    async (formData, { rejectWithValue }) => {
+      try {
+        const response = await axiosInstance.post<Project>(BASE_URL, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        return response.data;
+      } catch (error: any) {
+        return rejectWithValue(error.response?.data || 'Failed to add project');
+      }
     }
-  }
-);
+  );
 
 
 export const deleteProject = createAsyncThunk<number, number>(
