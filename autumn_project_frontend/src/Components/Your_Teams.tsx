@@ -74,7 +74,7 @@ const YourTeams: React.FC = () => {
   const userTeams = teams.filter((team) => team.team_admin_id === Number(userId));
 
   return (
-    <div className="flex w-full h-screen p-4 bg-blue-100">
+    <div className="flex w-full min-h-screen p-4 bg-blue-100">
       <div className="w-1/3 flex flex-col space-y-4 p-4 flex-grow">
         <ProfileDisplayCard
           avatarUrl={profile?.avatar_url||"https://via.placeholder.com/150"}

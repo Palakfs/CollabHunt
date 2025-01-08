@@ -69,7 +69,7 @@ const ViewProfilePage: React.FC = () => {
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
-    <div className="flex w-full h-screen p-4 bg-blue-100">
+    <div className="flex w-full min-h-screen p-4 bg-blue-100">
       <div className="w-1/3 flex flex-col space-y-4 p-4 flex-grow">
         <div className="relative flex flex-col items-center bg-blue-100 rounded-lg shadow-md p-4 m-2 w-90 h-72">
           <div className="relative">
