@@ -1,6 +1,8 @@
 # Autumn_Project_CollabHunt
 CollabHunt is a platform that helps students find the right teammates for collaborative opportunities. Users can create comprehensive profiles highlighting their skills, projects, and experience. The platform offers event listings categorized by domains enabling students to either form teams or join existing ones by sending requests to those whose goals align with theirs. CollabHunt is built using React with TypeScript and Redux for the frontend, PostgreSQL for database management, and Django Rest Framework for the backend.
 
+Here is the figma file : https://www.figma.com/design/zNh3oU7HyI3jv7Qh5WYXlB/Autumn-Project-Wireframes-Palak?node-id=0-1&t=1UEvtOGh0h5Gt4L0-1
+
 **Authentication**
 ![Project Login Page](https://github.com/user-attachments/assets/8d83185c-f8dd-4d3a-aaac-c08d0f858e4a)
 
