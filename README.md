@@ -1,4 +1,4 @@
-s🌟 CollabHunt – Where Ideas Meet Teammates
+🌟 CollabHunt – Where Ideas Meet Teammates
 Ever had a great idea or wanted to join a hackathon — but couldn’t find the right team? Or worse… joined one where only you showed up with commitment?
 I’ve been there. That’s exactly why I built CollabHunt.
 
