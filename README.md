@@ -1,7 +1,31 @@
-# Autumn_Project_CollabHunt
-CollabHunt is a platform that helps students find the right teammates for collaborative opportunities. Users can create comprehensive profiles highlighting their skills, projects, and experience. The platform offers event listings categorized by domains enabling students to either form teams or join existing ones by sending requests to those whose goals align with theirs. CollabHunt is built using React with TypeScript and Redux for the frontend, PostgreSQL for database management, and Django Rest Framework for the backend.
+s🌟 CollabHunt – Where Ideas Meet Teammates
+Ever had a great idea or wanted to join a hackathon — but couldn’t find the right team? Or worse… joined one where only you showed up with commitment?
+I’ve been there. That’s exactly why I built CollabHunt.
 
-Here is the figma file : https://www.figma.com/design/zNh3oU7HyI3jv7Qh5WYXlB/Autumn-Project-Wireframes-Palak?node-id=0-1&t=1UEvtOGh0h5Gt4L0-1
+CollabHunt is your all-in-one platform to find serious, like-minded teammates for hackathons, projects, startups — or anything you’re building.
+
+🔥 What makes it different?
+
+✅ Real profiles with skills, experience, and past projects — not just a name and email.
+
+✅ Team requests with transparency — you know what someone's bringing to the table and what they're expecting from teammates.
+
+✅ Domain-filtered events — find hackathons and collab opportunities that match your interests.
+
+✅ No team? No problem. Discover open teams and send a request to join.
+
+✅ Built for clubs & communities — no more messy Discord groups for teaming up people when you are organizing a hackathon/event.
+
+CollabHunt isn’t just for hackathons. Whether you're looking for a co-founder, a project buddy, or someone to help ship your next big idea — this is the place.
+
+💻 Tech Stack:
+Frontend: React + TypeScript + Redux
+
+Backend: Django REST Framework
+
+Database: PostgreSQL
+
+✨ Built with the belief that great teams build great things — and everyone deserves a shot at finding theirs.
 
 **Authentication**
 ![Project Login Page](https://github.com/user-attachments/assets/8d83185c-f8dd-4d3a-aaac-c08d0f858e4a)
